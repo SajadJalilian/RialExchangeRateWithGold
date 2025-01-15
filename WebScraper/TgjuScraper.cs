@@ -8,7 +8,7 @@ public class TgjuScraper
     public async Task ReadData()
     {
         await using var appDbContext = new AppDbContext();
-        var urlQuery = QueryBuilder.Build(0, 30);
+        var urlQuery = QueryBuilder.Build(0, 30, 1);
 
         using var httpClient = HttpClientBuilder();
 
@@ -22,9 +22,10 @@ public class TgjuScraper
         appDbContext.GoldDatas.AddRange(goldDatas);
         await appDbContext.SaveChangesAsync();
 
-        for (var i = 30; i < apiResponse.RecordsTotal; i += 30)
+        var j = 2;
+        for (var i = 30; i < apiResponse.RecordsTotal; i += 30, j++)
         {
-            var q = QueryBuilder.Build(i, 30);
+            var q = QueryBuilder.Build(i, 30, 1);
             var rm = await httpClient.GetAsync(q);
             if (!rm.IsSuccessStatusCode) return;
 
