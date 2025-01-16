@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebScraper", "WebScraper\WebScraper.csproj", "{D12D10F9-9721-441B-9457-1D9CE0BFD0E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseSaver", "DatabaseSaver\DatabaseSaver.csproj", "{0A364D30-42B7-4842-8BC0-B8531203E29C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{500C09FB-1CAE-4400-87B5-3C5A25CD5B71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{D12D10F9-9721-441B-9457-1D9CE0BFD0E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D12D10F9-9721-441B-9457-1D9CE0BFD0E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D12D10F9-9721-441B-9457-1D9CE0BFD0E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A364D30-42B7-4842-8BC0-B8531203E29C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A364D30-42B7-4842-8BC0-B8531203E29C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A364D30-42B7-4842-8BC0-B8531203E29C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A364D30-42B7-4842-8BC0-B8531203E29C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{500C09FB-1CAE-4400-87B5-3C5A25CD5B71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{500C09FB-1CAE-4400-87B5-3C5A25CD5B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{500C09FB-1CAE-4400-87B5-3C5A25CD5B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{500C09FB-1CAE-4400-87B5-3C5A25CD5B71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
