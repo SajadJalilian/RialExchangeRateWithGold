@@ -1,0 +1,96 @@
+﻿name: Daily Data Update
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  update_data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+          
+      - name: Build Archive Generator
+        run: dotnet build ArchiveGenerator
+
+      - name: Install Proxy
+        if: github.repository == 'SajadJalilian/RialExchangeRateWithGold'
+        run: |
+          sudo snap install opera-proxy
+          opera-proxy -country EU >/dev/null 2>&1 &
+          sleep 10
+          export http_proxy="http://127.0.0.1:18080"
+          export https_proxy="http://127.0.0.1:18080"
+
+      - name: Run ArchiveGenerator
+        if: github.repository == 'SajadJalilian/RialExchangeRateWithGold'
+        run: |
+          dotnet build ./ArchiveGenerator/ArchiveGenerator.csproj 
+          dotnet publish ./ArchiveGenerator/ArchiveGenerator.csproj -o ./app
+
+      - name: Setup tmate session
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        uses: mxschmitt/action-tmate@v3
+
+      - name: Add new data if exist
+        id: data_added
+        run: |
+          ./app/ArchiveGenerator > output.log
+          
+          last_line=$(tail -n 1 output.log)
+          
+          if [ $return_code -eq true ]; then
+            echo "changed=ture" >> $GITHUB_OUTPUT
+          else 
+            echo "changed=else" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload result as release
+        if: steps.data_added.outputs.changed == 'true'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "artifact/*.*"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.TAG_NAME }}
+          name: ${{ env.RELEASE_NAME }}
+
+      - name: Delete old releases
+        if: steps.data_added.outputs.changed == 'true'
+        uses: dev-drprasad/delete-older-releases@v0.3.2
+        with:
+          keep_latest: 5
+          delete_tags: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push artifacts to data branch
+        if: steps.data_added.outputs.changed == 'true'
+        run: |
+          mv artifact/ ../
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git fetch origin
+          git push origin --delete data || true
+          git checkout --orphan data
+          git reset --hard
+          cp -r ../artifact/* .
+          git add .
+          git commit -m "Generate and update data"
+          git push origin data

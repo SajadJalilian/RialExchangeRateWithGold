@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WebScraper\WebScraper.csproj" />
+        <ProjectReference Include="..\DataSaver\DataSaver.csproj"/>
     </ItemGroup>
 
 </Project>

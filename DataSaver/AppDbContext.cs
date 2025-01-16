@@ -13,7 +13,6 @@ public class AppDbContext : DbContext
         DbPath = Path.Join(path, "goldprice.db");
     }
 
-
     public DbSet<GoldDataEntity> GoldDatas { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
