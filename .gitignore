@@ -4,4 +4,4 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea/
-WebScraper.sln.*
+*.sln.DotSettings.user
