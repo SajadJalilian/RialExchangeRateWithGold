@@ -1,4 +1,4 @@
-﻿namespace WebScraper;
+﻿namespace DatabaseSaver;
 
 public class GoldDataEntity
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace WebScraper;
+namespace DatabaseSaver;
 
 public class AppDbContext : DbContext
 {
