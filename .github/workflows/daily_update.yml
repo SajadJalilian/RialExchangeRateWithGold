@@ -52,12 +52,16 @@ jobs:
       - name: Add new data if exist
         id: data_added
         run: |
+          git fetch origin data
+          git show data:Gold24Carat_min.json > ./app/temp_data.json
           ./app/ArchiveGenerator > output.log
           
           last_line=$(tail -n 1 output.log)
           
           if [ $return_code -eq true ]; then
             echo "changed=ture" >> $GITHUB_OUTPUT
+            echo "TAG_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+            echo "RELEASE_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
           else 
             echo "changed=else" >> $GITHUB_OUTPUT
           fi
@@ -67,7 +71,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "artifact/*.*"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.MY_SECRET }}
           tag: ${{ env.TAG_NAME }}
           name: ${{ env.RELEASE_NAME }}
 
@@ -78,7 +82,7 @@ jobs:
           keep_latest: 5
           delete_tags: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_SECRET }}
 
       - name: Push artifacts to data branch
         if: steps.data_added.outputs.changed == 'true'
