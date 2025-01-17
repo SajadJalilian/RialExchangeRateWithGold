@@ -58,8 +58,6 @@ jobs:
           git show data:Gold24Carat_min.json > ./app/temp_data.json
           ./app/ArchiveGenerator > output.log
           
-          cat output.log
-          
           last_line=$(tail -n 1 output.log)
           echo $last_line
           
@@ -70,6 +68,7 @@ jobs:
             echo "TAG_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
             echo "RELEASE_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
           else 
+            echo "No changes"
             echo "changed=else" >> $GITHUB_OUTPUT
           fi
 
