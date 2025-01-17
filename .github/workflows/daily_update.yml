@@ -101,7 +101,9 @@ jobs:
           git push origin --delete data || true
           git checkout --orphan data
           git reset --hard
-          git add ./app/artifact/
+          cp ./app/artifact/* .
+          git add Gold24Carat.json
+          git add Gold24Carat_min.json
           git status
           git commit -m "Generate and update data"
           git push origin data
