@@ -10,24 +10,16 @@ public static class SaveDataToJsonFile
     private const string FileName = $"{Gold24CaratPrice}.json";
     private const string FileNameMin = $"{Gold24CaratPrice}_min.json";
 
-    public static bool Save()
+    public static bool Save(GoldDataModel[] data)
     {
         string baseDirectory = AppContext.BaseDirectory;
         var path = $"{baseDirectory}/{ArtifactDir}";
         
         using var appDbContext = new AppDbContext();
 
-        var data = appDbContext.GoldDatas.ToArray();
-
-        var trimmedData = data.Select(x => new GoldDataModel
-        {
-            RialPrice = x.RialPrice,
-            Date = x.Date
-        }).ToArray();
-
         var options = new JsonSerializerOptions { WriteIndented = true };
-        var formattedJsonString = JsonSerializer.Serialize(trimmedData, options);
-        var minifiedJsonString = JsonSerializer.Serialize(trimmedData);
+        var formattedJsonString = JsonSerializer.Serialize(data, options);
+        var minifiedJsonString = JsonSerializer.Serialize(data);
 
         if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 

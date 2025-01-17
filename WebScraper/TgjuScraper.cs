@@ -8,21 +8,14 @@ public class TgjuScraper
     {
         var totalGoldData = new List<GoldDataModel>();
 
-        var request = RequestBuilder.Build(0);
         using var client = new HttpClient();
-        var response = await client.SendAsync(request);
+        var (_, recordsTotal) = await ReadLatestPage();
 
-        response.EnsureSuccessStatusCode();
-        if (!response.IsSuccessStatusCode) return [];
-
-        var result = await response.Content.ReadAsStringAsync();
-        var apiResponse = JsonSerializer.Deserialize<ApiResponse>(result);
-
-        Console.WriteLine($"Start scrapping data. Total record is {apiResponse.RecordsTotal}");
-        var estimatedTime = apiResponse.RecordsTotal / 30 * delay / 60;
+        Console.WriteLine($"Start scrapping data. Total record is {recordsTotal}");
+        var estimatedTime = recordsTotal / 30 * delay / 60;
         Console.WriteLine($"Estimated time is {estimatedTime} Minutes with {delay} seconds delay between each call");
 
-        for (var i = 0; i < apiResponse.RecordsTotal; i += 30)
+        for (var i = 0; i < recordsTotal; i += 30)
         {
             var rb = RequestBuilder.Build(i);
             var r = await client.SendAsync(rb);
@@ -40,5 +33,21 @@ public class TgjuScraper
         }
 
         return totalGoldData.ToArray();
+    }
+
+    public async Task<(GoldDataModel[] data, int recordsToal)> ReadLatestPage()
+    {
+        var request = RequestBuilder.Build(0);
+        using var client = new HttpClient();
+        var response = await client.SendAsync(request);
+
+        response.EnsureSuccessStatusCode();
+        if (!response.IsSuccessStatusCode) return ([], 0);
+
+        var result = await response.Content.ReadAsStringAsync();
+        var apiResponse = JsonSerializer.Deserialize<ApiResponse>(result);
+        var goldData = DataExtractor.Extract(apiResponse.Data);
+
+        return (goldData, apiResponse.RecordsTotal);
     }
 }
