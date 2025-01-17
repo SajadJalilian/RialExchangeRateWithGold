@@ -58,9 +58,14 @@ jobs:
           git show data:Gold24Carat_min.json > ./app/temp_data.json
           ./app/ArchiveGenerator > output.log
           
-          last_line=$(tail -n 1 output.log)
+          cat output.log
           
-          if [ $return_code -eq true ]; then
+          last_line=$(tail -n 1 output.log)
+          echo last_line
+          
+          if [ $last_line -eq true ]; then
+            echo "New changes are available"
+          
             echo "changed=ture" >> $GITHUB_OUTPUT
             echo "TAG_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
             echo "RELEASE_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
