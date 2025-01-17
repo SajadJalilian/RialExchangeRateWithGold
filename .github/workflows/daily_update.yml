@@ -77,7 +77,7 @@ jobs:
         if: steps.data_added.outputs.changed == 'true'
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "artifact/*.*"
+          artifacts: "/app/artifact/*.*"
           token: ${{ secrets.MY_SECRET }}
           tag: ${{ env.TAG_NAME }}
           name: ${{ env.RELEASE_NAME }}
@@ -103,6 +103,6 @@ jobs:
           git checkout --orphan data
           git reset --hard
           cp -r ../artifact/* .
-          git add .
+          git add artifact/
           git commit -m "Generate and update data"
           git push origin data
