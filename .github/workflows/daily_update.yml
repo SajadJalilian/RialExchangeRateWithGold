@@ -64,7 +64,9 @@ jobs:
           if [ $last_line == "True" ]; then
             echo "New changes are available"
           
-            echo "changed=ture" >> $GITHUB_OUTPUT
+#            echo "changed=ture" >> $GITHUB_OUTPUT
+            echo "::set-output name=changed::true"
+          
             echo "TAG_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
             echo "RELEASE_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
           else 
