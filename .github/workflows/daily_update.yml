@@ -94,7 +94,6 @@ jobs:
       - name: Push artifacts to data branch
         if: steps.data_added.outputs.changed == 'true'
         run: |
-          mv ./app/artifact/ ../
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git fetch origin
@@ -102,7 +101,7 @@ jobs:
           git push origin --delete data || true
           git checkout --orphan data
           git reset --hard
-          cp -r ../artifact/* .
-          git add artifact/
+          git add ./app/artifact/
+          git status
           git commit -m "Generate and update data"
           git push origin data
