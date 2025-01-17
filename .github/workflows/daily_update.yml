@@ -63,7 +63,7 @@ jobs:
           last_line=$(tail -n 1 output.log)
           echo $last_line
           
-          if [ $last_line -eq true ]; then
+          if [ $last_line == "true" ]; then
             echo "New changes are available"
           
             echo "changed=ture" >> $GITHUB_OUTPUT
