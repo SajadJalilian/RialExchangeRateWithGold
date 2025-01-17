@@ -61,7 +61,7 @@ jobs:
           cat output.log
           
           last_line=$(tail -n 1 output.log)
-          echo last_line
+          echo $last_line
           
           if [ $last_line -eq true ]; then
             echo "New changes are available"
