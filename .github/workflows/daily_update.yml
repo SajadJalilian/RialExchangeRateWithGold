@@ -52,8 +52,9 @@ jobs:
       - name: Add new data if exist
         id: data_added
         run: |
-          git checkout origin data
-          git checkout origin master
+          git fetch origin
+          git checkout data
+          git checkout master
           git show data:Gold24Carat_min.json > ./app/temp_data.json
           ./app/ArchiveGenerator > output.log
           
