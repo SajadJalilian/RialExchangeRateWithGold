@@ -58,6 +58,9 @@ jobs:
           git show data:Gold24Carat_min.json > ./app/temp_data.json
           ./app/ArchiveGenerator > output.log
           
+          cat output.log
+          echo "-----------------------"
+          
           last_line=$(tail -n 1 output.log)
           echo $last_line
           
