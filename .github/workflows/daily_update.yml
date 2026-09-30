@@ -33,7 +33,7 @@ jobs:
       - name: Install Proxy
         if: github.repository == 'SajadJalilian/RialExchangeRateWithGold'
         run: |
-          sudo snap install opera-proxy --candidate
+          sudo snap install opera-proxy --beta
           opera-proxy -country EU >/dev/null 2>&1 &
           sleep 10
           export http_proxy="http://127.0.0.1:18080"
